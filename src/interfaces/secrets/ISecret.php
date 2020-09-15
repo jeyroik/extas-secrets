@@ -16,12 +16,19 @@ interface ISecret extends IItem, IDispatcherWrapper, IHasSampleParameters, IHasV
 {
     public const SUBJECT = 'extas.secret';
 
+    public const FLAG__ENCRYPT = 'enc';
+    public const FLAG__DECRYPT = 'dec';
     public const FIELD__TARGET = 'target';
 
     /**
      * @return bool
      */
-    public function resolve(): bool;
+    public function encrypt(): bool;
+
+    /**
+     * @return bool
+     */
+    public function decrypt(): bool;
 
     /**
      * @return string

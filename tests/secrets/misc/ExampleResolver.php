@@ -20,9 +20,29 @@ class ExampleResolver extends Item implements ISecretResolver
      * @return bool
      * @throws \Exception
      */
-    public function __invoke(ISecret &$secret): bool
+    public function __invoke(ISecret &$secret, string $flag): bool
     {
-        $secret->setValue('resolved');
+        return $flag === ISecret::FLAG__ENCRYPT
+            ? $this->encrypt($secret)
+            : $this->decrypt($secret);
+    }
+
+    protected function encrypt(ISecret &$secret): bool
+    {
+        $secret->setValue(base64_encode($secret->getValue()));
+
+        $return = $this->config[static::FIELD__RETURN] ?? true;
+
+        if (!$return) {
+            throw new \Exception('Error');
+        }
+
+        return true;
+    }
+
+    protected function decrypt(ISecret &$secret): bool
+    {
+        $secret->setValue(base64_decode($secret->getValue()));
 
         $return = $this->config[static::FIELD__RETURN] ?? true;
 
