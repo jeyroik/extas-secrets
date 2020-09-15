@@ -15,7 +15,8 @@ interface ISecretResolver extends IItem
 
     /**
      * @param ISecret $secret
+     * @param string $flag
      * @return bool
      */
-    public function __invoke(ISecret &$secret): bool;
+    public function __invoke(ISecret &$secret, string $flag): bool;
 }

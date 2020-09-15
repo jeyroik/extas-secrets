@@ -25,18 +25,18 @@ class Secret extends Item implements ISecret
      * @return bool
      * @throws MissedOrUnknown
      */
-    public function resolve(): bool
+    public function encrypt(): bool
     {
-        /**
-         * @var ISecretResolver $resolver
-         */
-        $resolver = $this->buildClassWithParameters($this->getParametersValues());
+        return $this->resolve(static::FLAG__ENCRYPT);
+    }
 
-        try {
-            return $resolver($this);
-        } catch (\Exception $e) {
-            return false;
-        }
+    /**
+     * @return bool
+     * @throws MissedOrUnknown
+     */
+    public function decrypt(): bool
+    {
+        return $this->resolve(static::FLAG__DECRYPT);
     }
 
     /**
@@ -56,6 +56,21 @@ class Secret extends Item implements ISecret
         $this->config[static::FIELD__TARGET] = $target;
 
         return $this;
+    }
+
+
+    protected function resolve(string $flag): bool
+    {
+        /**
+         * @var ISecretResolver $resolver
+         */
+        $resolver = $this->buildClassWithParameters($this->getParametersValues());
+
+        try {
+            return $resolver($this, $flag);
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**

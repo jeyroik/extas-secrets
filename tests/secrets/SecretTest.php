@@ -26,6 +26,7 @@ class SecretTest extends TestCase
     {
         $secret = new Secret([
             Secret::FIELD__CLASS => ExampleResolver::class,
+            Secret::FIELD__VALUE => 'test',
             Secret::FIELD__PARAMETERS => [
                 ExampleResolver::FIELD__RETURN => [
                     ISampleParameter::FIELD__NAME => ExampleResolver::FIELD__RETURN,
@@ -34,19 +35,27 @@ class SecretTest extends TestCase
             ]
         ]);
 
-        $resolved = $secret->resolve();
+        $encrypted = $secret->encrypt();
 
-        $this->assertTrue($resolved, 'Incorrect resolving');
+        $this->assertTrue($encrypted, 'Incorrect encrypting');
         $this->assertEquals(
-            'resolved',
+            base64_encode('test'),
+            $secret->getValue(),
+            'Incorrect value: ' . print_r($secret->getValue(), true)
+        );
+
+        $decrypted = $secret->decrypt();
+        $this->assertTrue($encrypted, 'Incorrect decrypting');
+        $this->assertEquals(
+            'test',
             $secret->getValue(),
             'Incorrect value: ' . print_r($secret->getValue(), true)
         );
 
         $secret->setParameterValue(ExampleResolver::FIELD__RETURN, false);
 
-        $resolved = $secret->resolve();
-        $this->assertFalse($resolved, 'Incorrect resolving');
+        $resolved = $secret->encrypt();
+        $this->assertFalse($resolved, 'Incorrect exception catching');
 
         $secret->setTarget('test');
         $this->assertEquals('test', $secret->getTarget(), 'Incorrect target');
