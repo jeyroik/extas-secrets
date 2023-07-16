@@ -3,8 +3,9 @@ namespace extas\components\secrets;
 
 use extas\components\exceptions\MissedOrUnknown;
 use extas\components\Item;
-use extas\components\samples\parameters\THasSampleParameters;
+use extas\components\parameters\THasParams;
 use extas\components\TDispatcherWrapper;
+use extas\components\THasStringId;
 use extas\components\THasValue;
 use extas\interfaces\secrets\ISecret;
 use extas\interfaces\secrets\ISecretResolver;
@@ -18,8 +19,9 @@ use extas\interfaces\secrets\ISecretResolver;
 class Secret extends Item implements ISecret
 {
     use TDispatcherWrapper;
-    use THasSampleParameters;
     use THasValue;
+    use THasStringId;
+    use THasParams;
 
     /**
      * @return bool
@@ -27,7 +29,7 @@ class Secret extends Item implements ISecret
      */
     public function encrypt(): bool
     {
-        return $this->resolve(static::FLAG__ENCRYPT);
+        return $this->resolve(ESecretFlag::Encrypt);
     }
 
     /**
@@ -36,35 +38,15 @@ class Secret extends Item implements ISecret
      */
     public function decrypt(): bool
     {
-        return $this->resolve(static::FLAG__DECRYPT);
+        return $this->resolve(ESecretFlag::Decrypt);
     }
 
-    /**
-     * @return string
-     */
-    public function getTarget(): string
-    {
-        return $this->config[static::FIELD__TARGET] ?? '';
-    }
-
-    /**
-     * @param string $target
-     * @return $this|Secret
-     */
-    public function setTarget(string $target)
-    {
-        $this->config[static::FIELD__TARGET] = $target;
-
-        return $this;
-    }
-
-
-    protected function resolve(string $flag): bool
+    protected function resolve(ESecretFlag $flag): bool
     {
         /**
          * @var ISecretResolver $resolver
          */
-        $resolver = $this->buildClassWithParameters($this->getParametersValues());
+        $resolver = $this->buildClassWithParameters($this->getParamsValues());
 
         try {
             return $resolver($this, $flag);

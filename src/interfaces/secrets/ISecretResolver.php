@@ -1,6 +1,7 @@
 <?php
 namespace extas\interfaces\secrets;
 
+use extas\components\secrets\ESecretFlag;
 use extas\interfaces\IItem;
 
 /**
@@ -15,8 +16,8 @@ interface ISecretResolver extends IItem
 
     /**
      * @param ISecret $secret
-     * @param string $flag
+     * @param ESecretFlag $flag
      * @return bool
      */
-    public function __invoke(ISecret &$secret, string $flag): bool;
+    public function __invoke(ISecret &$secret, ESecretFlag $flag): bool;
 }
