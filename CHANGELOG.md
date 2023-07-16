@@ -1,3 +1,9 @@
+# 2.1.0
+
+- Added extension `IExtensionSecretWithPassword`. It is providing methods:
+  - `withPassword(string $password): ISecret`: added param `IExtensionSecretWithPassword::PARAM__PASSWORD` to a secret.
+  - `getPassword(): string`: return password value, return `''` if password param is missed.
+
 # 2.0.0
 
 - Updated package to `extas-foundation v6`.
