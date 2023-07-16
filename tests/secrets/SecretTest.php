@@ -3,6 +3,7 @@ namespace tests\secrets;
 
 use extas\components\secrets\resolvers\Base64SecretResolver;
 use extas\components\secrets\Secret;
+use extas\interfaces\extensions\secrets\IExtensionSecretWithKey;
 use extas\interfaces\extensions\secrets\IExtensionSecretWithPassword;
 use extas\interfaces\secrets\ISecret;
 use tests\ExtasTestCase;
@@ -56,5 +57,16 @@ class SecretTest extends ExtasTestCase
         $secret->withPassword('test');
 
         $this->assertEquals('test', $secret->getPassword());
+    }
+
+    public function testSecretWithKey()
+    {
+        /**
+         * @var IExtensionSecretWithKey|ISecret $secret
+         */
+        $secret = new Secret();
+        $secret->withKey('test');
+
+        $this->assertEquals('test', $secret->getKey());
     }
 }

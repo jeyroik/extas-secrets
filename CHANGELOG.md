@@ -1,3 +1,9 @@
+# 2.2.0
+
+- Added extension `IExtensionSecretWithKey`. It is providing methods:
+  - `withKey(string $key): ISecret`: added param `IExtensionSecretWithKey::PARAM__KEY` to a secret.
+  - `getKey(): string`: return key value, return `''` if key param is missed.
+
 # 2.1.0
 
 - Added extension `IExtensionSecretWithPassword`. It is providing methods:
