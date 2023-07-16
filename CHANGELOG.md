@@ -1,3 +1,7 @@
+# 2.2.1
+
+- Fixed `extas.storage.php` .
+
 # 2.2.0
 
 - Added extension `IExtensionSecretWithKey`. It is providing methods:
